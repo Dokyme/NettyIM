@@ -1,10 +1,11 @@
 package com.dokyme.nettyim.client;
 
+import com.dokyme.nettyim.client.console.ConsoleCommandManager;
+import com.dokyme.nettyim.client.console.LoginConsoleCommand;
+import com.dokyme.nettyim.client.handler.*;
 import com.dokyme.nettyim.codec.PacketDecoder;
 import com.dokyme.nettyim.codec.PacketEncoder;
 import com.dokyme.nettyim.codec.Splitter;
-import com.dokyme.nettyim.protocol.request.LoginRequestPacket;
-import com.dokyme.nettyim.protocol.request.MessageRequestPacket;
 import com.dokyme.nettyim.util.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -37,30 +38,28 @@ public class ChatClient {
                                 .addLast(new PacketDecoder())
                                 .addLast(new MessageResponseHandler())
                                 .addLast(new LoginResponseHandler())
+                                .addLast(new CreateGroupResponseHandler())
+                                .addLast(new LogoutResponseHandler())
+                                .addLast(new JoinGroupResponseHandler())
+                                .addLast(new QuitGroupResponseHandler())
+                                .addLast(new JoinBroadcastResponseHandler())
+                                .addLast(new GroupMessageResponseHandler())
                                 .addLast(new PacketEncoder());
                     }
                 });
-        connect(bootstrap, "127.0.0.1", 10000, MAX_RETRY);
+        connect(bootstrap, "127.0.0.1", 10001, MAX_RETRY);
     }
 
     private static void startConsoleThread(Channel channel) {
         Scanner scanner = new Scanner(System.in);
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 if (!LoginUtil.hasLogin(channel)) {
-                    clientLog("请输入用户名登陆：");
-                    String username = scanner.nextLine();
-                    loginRequestPacket.setUsername(username);
-                    loginRequestPacket.setPassword("pwd");
-                    channel.writeAndFlush(loginRequestPacket);
+                    new LoginConsoleCommand().exec(scanner, channel);
                     waitForLoginResponse();
                 } else {
-                    System.out.print("请输入对方id：");
-                    String toUserId = scanner.nextLine();
-                    System.out.print("请输入消息内容：");
-                    String message = scanner.nextLine();
-                    channel.writeAndFlush(new MessageRequestPacket(toUserId, message));
+                    consoleCommandManager.exec(scanner, channel);
                 }
             }
         }).start();

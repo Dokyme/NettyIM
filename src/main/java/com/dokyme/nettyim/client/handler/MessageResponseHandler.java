@@ -1,4 +1,4 @@
-package com.dokyme.nettyim.client;
+package com.dokyme.nettyim.client.handler;
 
 import com.dokyme.nettyim.protocol.response.MessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;

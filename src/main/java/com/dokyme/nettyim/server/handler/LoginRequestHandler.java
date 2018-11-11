@@ -1,23 +1,19 @@
-package com.dokyme.nettyim.server;
+package com.dokyme.nettyim.server.handler;
 
 import com.dokyme.nettyim.protocol.PacketCodeC;
 import com.dokyme.nettyim.protocol.request.LoginRequestPacket;
 import com.dokyme.nettyim.protocol.response.LoginResponsePacket;
 import com.dokyme.nettyim.session.Session;
+import com.dokyme.nettyim.util.IDUtil;
 import com.dokyme.nettyim.util.LoginUtil;
 import com.dokyme.nettyim.util.SessionUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.UUID;
-
 import static com.dokyme.nettyim.Log.serverLog;
 
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
-    private static String randomUserId() {
-        return UUID.randomUUID().toString().split("-")[0];
-    }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
@@ -31,7 +27,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         loginResponsePacket.setVersion(loginRequestPacket.getVersion());
         if (isValid(loginRequestPacket)) {
             serverLog("账号密码校验成功");
-            String userId = randomUserId();
+            String userId = IDUtil.uuid();
             loginResponsePacket.setUserId(userId);
             SessionUtil.bindSession(new Session(loginRequestPacket.getUsername(), userId), ctx.channel());
             LoginUtil.markAsLogin(ctx.channel());
@@ -46,7 +42,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     }
 
     private boolean isValid(LoginRequestPacket loginRequestPacket) {
-        //TODO:
-        return true;
+        return loginRequestPacket.getUsername().equals(loginRequestPacket.getPassword());
     }
 }

@@ -1,9 +1,7 @@
 package com.dokyme.nettyim.protocol;
 
-import com.dokyme.nettyim.protocol.request.LoginRequestPacket;
-import com.dokyme.nettyim.protocol.request.MessageRequestPacket;
-import com.dokyme.nettyim.protocol.response.LoginResponsePacket;
-import com.dokyme.nettyim.protocol.response.MessageResponsePacket;
+import com.dokyme.nettyim.protocol.request.*;
+import com.dokyme.nettyim.protocol.response.*;
 import com.dokyme.nettyim.serialize.JSONSerializer;
 import com.dokyme.nettyim.serialize.Serializer;
 import io.netty.buffer.ByteBuf;
@@ -12,7 +10,7 @@ import io.netty.buffer.ByteBufAllocator;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.dokyme.nettyim.protocol.Command.*;
+import static com.dokyme.nettyim.protocol.command.Command.*;
 
 public class PacketCodeC {
 
@@ -28,6 +26,15 @@ public class PacketCodeC {
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(JOIN_GROUP_BROADCAST, JoinGroupBroadcastPacket.class);
+        packetTypeMap.put(QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+        packetTypeMap.put(GROUP_MESSAGE_REQUEST, GroupMessageRequestPacket.class);
+        packetTypeMap.put(GROUP_MESSAGE_RESPONSE, GroupMessageResponsePacket.class);
 
         serializerMap.put(Serializer.JSON, new JSONSerializer());
     }

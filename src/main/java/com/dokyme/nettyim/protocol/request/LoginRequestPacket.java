@@ -1,6 +1,6 @@
 package com.dokyme.nettyim.protocol.request;
 
-import com.dokyme.nettyim.protocol.Command;
+import com.dokyme.nettyim.protocol.command.Command;
 import com.dokyme.nettyim.protocol.Packet;
 import lombok.Data;
 

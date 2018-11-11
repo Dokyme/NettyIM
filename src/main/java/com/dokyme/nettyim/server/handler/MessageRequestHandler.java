@@ -1,4 +1,4 @@
-package com.dokyme.nettyim.server;
+package com.dokyme.nettyim.server.handler;
 
 import com.dokyme.nettyim.protocol.request.MessageRequestPacket;
 import com.dokyme.nettyim.protocol.response.MessageResponsePacket;
@@ -7,6 +7,7 @@ import com.dokyme.nettyim.util.SessionUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
 
 import static com.dokyme.nettyim.Log.serverLog;
 
@@ -25,7 +26,12 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
             toUserChannel.writeAndFlush(toUserResponsePacket);
         } else {
-            serverLog(messageRequestPacket.getToUserId() + " 不在线，发送消息失败");
+            ChannelGroup channelGroup = SessionUtil.getChannelGroup(session.getUserId());
+            if (channelGroup != null) {
+                String groupId = messageRequestPacket.getToUserId();
+            } else {
+                serverLog(messageRequestPacket.getToUserId() + " 不在线，发送消息失败");
+            }
         }
     }
 }

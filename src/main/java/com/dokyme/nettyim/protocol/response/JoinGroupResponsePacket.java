@@ -1,18 +1,17 @@
 package com.dokyme.nettyim.protocol.response;
 
-import com.dokyme.nettyim.protocol.command.Command;
 import com.dokyme.nettyim.protocol.Packet;
+import com.dokyme.nettyim.protocol.command.Command;
 import lombok.Data;
 
 @Data
-public class LoginResponsePacket extends Packet {
-
+public class JoinGroupResponsePacket extends Packet {
+    private String groupId;
     private boolean success;
     private String reason;
-    private String userId;
 
     @Override
     public Byte getCommand() {
-        return Command.LOGIN_RESPONSE;
+        return Command.JOIN_GROUP_RESPONSE;
     }
 }

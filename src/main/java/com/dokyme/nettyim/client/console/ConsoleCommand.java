@@ -1,6 +1,7 @@
-package com.dokyme.nettyim.protocol;
+package com.dokyme.nettyim.client.console;
 
-import java.nio.channels.Channel;
+import io.netty.channel.Channel;
+
 import java.util.Scanner;
 
 public interface ConsoleCommand {

@@ -1,4 +1,4 @@
-package com.dokyme.nettyim.client;
+package com.dokyme.nettyim.client.handler;
 
 import com.dokyme.nettyim.protocol.response.LoginResponsePacket;
 import com.dokyme.nettyim.util.LoginUtil;

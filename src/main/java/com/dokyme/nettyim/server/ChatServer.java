@@ -3,6 +3,7 @@ package com.dokyme.nettyim.server;
 import com.dokyme.nettyim.codec.PacketDecoder;
 import com.dokyme.nettyim.codec.PacketEncoder;
 import com.dokyme.nettyim.codec.Splitter;
+import com.dokyme.nettyim.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
@@ -26,9 +27,14 @@ public class ChatServer {
                                 .addLast(new PacketDecoder())
                                 .addLast(new LoginRequestHandler())
                                 .addLast(new MessageRequestHandler())
+                                .addLast(new CreateGroupRequestHandler())
+                                .addLast(new LogoutRequestHandler())
+                                .addLast(new JoinGroupRequestHandler())
+                                .addLast(new QuitGroupRequestHandler())
+                                .addLast(new GroupMessageRequestHandler())
                                 .addLast(new PacketEncoder());
                     }
                 });
-        bootstrap.bind(10000);
+        bootstrap.bind(10001);
     }
 }

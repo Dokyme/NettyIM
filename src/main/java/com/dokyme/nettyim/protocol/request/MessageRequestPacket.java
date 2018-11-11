@@ -1,7 +1,7 @@
 package com.dokyme.nettyim.protocol.request;
 
-import com.dokyme.nettyim.protocol.Command;
 import com.dokyme.nettyim.protocol.Packet;
+import com.dokyme.nettyim.protocol.command.Command;
 import lombok.Data;
 
 @Data
@@ -10,9 +10,9 @@ public class MessageRequestPacket extends Packet {
     private String message;
     private String toUserId;
 
-    public MessageRequestPacket(String toUserId,String message) {
+    public MessageRequestPacket(String toUserId, String message) {
         this.message = message;
-        this.toUserId=toUserId;
+        this.toUserId = toUserId;
     }
 
     @Override
